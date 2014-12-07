@@ -38,7 +38,7 @@ shinyServer(function(input, output) {
   })
   
   plot2Input <- reactive({
-   getPlot2(dfInput(), districtInput())
+   getPlot2(dfInput(), input$var2)
   })
   
   output$province <- renderUI({

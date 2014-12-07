@@ -40,4 +40,5 @@ getPlot2 <- function(df, districts){
  for (i in 1:length(districts)) {
    toplot2[[i]] <- subset(df, id == districts[i])
  }
+ return(toplot2)
 }
