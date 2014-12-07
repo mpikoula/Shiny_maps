@@ -21,9 +21,9 @@ country.adm2.centroids.df[, 'NAME_1'] <- country.adm2.spdf@data[,'NAME_1']
 
 shinyServer(function(input, output) {
   
-#   dfInput <- reactive({
-#     getdf2(country.adm2.spdf, input$var1)
-#   })
+  dfInput <- reactive({
+    getdf2(country.adm2.spdf, input$var1)
+  })
   
 #   centroidInput <- reactive({
 #     getCentroids(country.adm2.centroids.df, input$var2)
@@ -32,9 +32,8 @@ shinyServer(function(input, output) {
 #   plot1Input <- reactive({
 #     getPlot1(country.adm1.df, $input$var1)
 #   })
-  
   districtInput <- reactive({
-    getDistricts(country.adm2.spdf, input$var1)
+    getDistricts(dfInput())
   })
   #plot2Input <- reactive({
   #  getPlot2(districtInput()[1], districtInput()[2])
@@ -48,7 +47,10 @@ shinyServer(function(input, output) {
   output$district <- renderUI({
     district_list <- districtInput()
     checkboxGroupInput("var2", label="Select Districts", choices=district_list)
-  })
+ })
+#   output$district <- renderText({
+#     print(districtInput())
+#   })
   #output$map <- renderPlot({
     #data<- switch(input$var,
     #    "Percent White" = counties$white,

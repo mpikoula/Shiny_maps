@@ -17,14 +17,11 @@ province_map <- function(province, districts, centroids, fill, size = 3) {
   print(p)
 }
 
-# getdf2 <- function(country.spdf, province) {
-#   sub.shape <- country.spdf[country.spdf$NAME_1 == province,]
-#   country.df <- fortify(sub.shape, region = "NAME_2")
-#   traceback()
-# }
-getDistricts <- function(country.spdf, province) {
+getdf2 <- function(country.spdf, province) {
   sub.shape <- country.spdf[country.spdf$NAME_1 == province,]
   country.df <- fortify(sub.shape, region = "NAME_2")
+}
+getDistricts <- function(country.df) {
   district_list <- unique(country.df$id)
 }
 
