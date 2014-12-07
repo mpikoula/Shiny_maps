@@ -19,6 +19,8 @@ country.adm2.centroids.df[, 'ID_2'] <- country.adm2.spdf@data[,'ID_2']
 country.adm2.centroids.df[, 'NAME_2'] <- country.adm2.spdf@data[,'NAME_2']
 country.adm2.centroids.df[, 'NAME_1'] <- country.adm2.spdf@data[,'NAME_1']
 
+toplot0 <- fortify(country.adm2.spdf, region = "NAME_0")
+
 shinyServer(function(input, output) {
   
   dfInput <- reactive({
@@ -53,8 +55,12 @@ shinyServer(function(input, output) {
 
    output$map <- renderPlot({
     toplot1 = plot1Input()
-    toplot2 = plot2Input()
-    centroids = centroidInput()
-    province_map(toplot1, toplot2, centroids, fill = input$fill, size = input$slider)
+    if (length(input$var2) <= 0) {
+      province_map(all=toplot0,toplot1, country = input$type)
+    } else {
+      toplot2 = plot2Input()
+      centroids = centroidInput()
+      district_map(all=toplot0,toplot1, toplot2, centroids, fill = input$fill, size = input$slider, country = input$type)
+    }
   })
 })

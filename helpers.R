@@ -1,8 +1,42 @@
 # Note: percent map is designed to work with the afghanistan admin data set
 # It may not work correctly with other data sets if their row order does 
 # not exactly match the order in which the maps package plots districts and provinces
-province_map <- function(province, districts, centroids, fill, size = 3) {
-  
+
+province_map <- function(all, province, fill, size = 3, country = FALSE) {
+  if (country) {
+    p <- ggplot(all, aes(x = long, y = lat, group = group)) + geom_polygon(fill="white", color = "black") +
+      geom_polygon(data=province, aes(x=long, y=lat, group=group), fill="grey", color = "black") +
+      geom_path(data = province, aes(x = long, y = lat), color = "black")+ 
+      labs(x=" ", y=" ") + 
+      theme_bw() + 
+      theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank()) + 
+      theme(axis.ticks = element_blank(), axis.text.x = element_blank(), axis.text.y = element_blank()) + 
+      theme(panel.border = element_blank())
+  } else {
+    p <- ggplot(province, aes(x = long, y = lat, group = group)) + geom_polygon(fill="white") +
+      geom_path(data = province, aes(x = long, y = lat), color = "black")+ 
+      labs(x=" ", y=" ") + 
+      theme_bw() + 
+      theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank()) + 
+      theme(axis.ticks = element_blank(), axis.text.x = element_blank(), axis.text.y = element_blank()) + 
+      theme(panel.border = element_blank())
+  }
+  print(p)
+}
+
+district_map <- function(all, province, districts, centroids, fill, size = 3, country = FALSE) {
+  if (country) {
+    p <- ggplot(all, aes(x = long, y = lat, group = group)) + geom_polygon(fill="white", color = "black") +
+      geom_polygon(data=province, aes(x=long, y=lat, group=group), fill="grey", color = "black") +
+      geom_path(data = province, aes(x = long, y = lat), color = "black")+ 
+      lapply(districts,geom_polygon, mapping=aes(x=long, y=lat), fill= fill) + 
+      lapply(districts,geom_path, mapping=aes(x=long, y=lat))+
+      labs(x=" ", y=" ") + 
+      theme_bw() + 
+      theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank()) + 
+      theme(axis.ticks = element_blank(), axis.text.x = element_blank(), axis.text.y = element_blank()) + 
+      theme(panel.border = element_blank())
+} else {
   p <- ggplot(province, aes(x = long, y = lat, group = group)) + geom_polygon(fill="white") +
     geom_path(data = province, aes(x = long, y = lat), color = "black")+ 
     lapply(districts,geom_polygon, mapping=aes(x=long, y=lat), fill= fill) + 
@@ -13,7 +47,7 @@ province_map <- function(province, districts, centroids, fill, size = 3) {
     theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank()) + 
     theme(axis.ticks = element_blank(), axis.text.x = element_blank(), axis.text.y = element_blank()) + 
     theme(panel.border = element_blank())
-  
+}
   print(p)
 }
 

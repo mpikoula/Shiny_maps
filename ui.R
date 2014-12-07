@@ -16,7 +16,7 @@ shinyUI(fluidPage(
       )),
     mainPanel(
       fluidRow(
-      checkboxInput("type", label = "Country-wide Map", value=TRUE),
+      checkboxInput("type", label = "Country-wide Map", value=FALSE),
       selectInput("fill", "Colour", choices=list("red", "blue", "green", "yellow", "violet", "grey", "cyan"), selectize = FALSE),
       plotOutput("map")
       )
