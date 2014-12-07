@@ -25,19 +25,19 @@ getDistricts <- function(country.df) {
   district_list <- unique(country.df$id)
 }
 
-getCentroids <- function(centroids, districts){
+getCentroids <- function(centroids, province, districts){
   cent2 <-subset(centroids, (NAME_2 %in% districts))
   cent2 <-subset(cent2, NAME_1 == province)
 }
 
-#getPlot1 <- function(df, province){
-#  toplot1 = subset(df, id == province)
-#}
+getPlot1 <- function(df, province){
+ toplot1 = subset(df, id == province)
+}
 
-#getPlot2 <- function(df, districts){
-#  toplot2 <- replicate(length(districts), data.frame())
+getPlot2 <- function(df, districts){
+ toplot2 <- replicate(length(districts), data.frame())
   
-#  for (i in 1:length(districts)) {
-#    toplot2[[i]] <- subset(afghanistan.adm2.df, id == districts[i])
-#  })
-#}
+ for (i in 1:length(districts)) {
+   toplot2[[i]] <- subset(df, id == districts[i])
+ }
+}

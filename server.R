@@ -25,19 +25,21 @@ shinyServer(function(input, output) {
     getdf2(country.adm2.spdf, input$var1)
   })
   
-#   centroidInput <- reactive({
-#     getCentroids(country.adm2.centroids.df, input$var2)
-#   })
+  centroidInput <- reactive({
+    getCentroids(country.adm2.centroids.df, input$var1, input$var2)
+  })
   
-#   plot1Input <- reactive({
-#     getPlot1(country.adm1.df, $input$var1)
-#   })
+  plot1Input <- reactive({
+    getPlot1(country.adm1.df, input$var1)
+  })
+  
   districtInput <- reactive({
     getDistricts(dfInput())
   })
-  #plot2Input <- reactive({
-  #  getPlot2(districtInput()[1], districtInput()[2])
-  #})
+  
+  plot2Input <- reactive({
+   getPlot2(dfInput(), districtInput())
+  })
   
   output$province <- renderUI({
     province_list <- levels(as.factor(country.adm2.spdf@data[,'NAME_1']))
@@ -48,25 +50,11 @@ shinyServer(function(input, output) {
     district_list <- districtInput()
     checkboxGroupInput("var2", label="Select Districts", choices=district_list)
  })
-#   output$district <- renderText({
-#     print(districtInput())
-#   })
-  #output$map <- renderPlot({
-    #data<- switch(input$var,
-    #    "Percent White" = counties$white,
-    #    "Percent Black" = counties$black,
-    #    "Percent Hispanic" = counties$hispanic,
-    #    "Percent Asian" = counties$asian)
-    #color <- switch(input$var, 
-    #                "Percent White" = "darkgreen",
-    #                "Percent Black" = "black",
-    #                "Percent Hispanic" = "darkorange",
-    #                "Percent Asian" = "darkviolet")
-    #legend <- switch(input$var, 
-    #                 "Percent White" = "% White",
-    #                 "Percent Black" = "% Black",
-    #                 "Percent Hispanic" = "% Hispanic",
-    #                 "Percent Asian" = "% Asian")
-    #province_map(province, districts, centroids, fill, size = input$slider)
-  #})
+
+   output$map <- renderPlot({
+    toplot1 = plot1Input()
+    toplot2 = plot2Input()
+    centroids = centroidInput()
+    province_map(toplot1, toplot2, centroids, fill = input$fill, size = input$slider)
+  })
 })
