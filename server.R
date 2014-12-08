@@ -66,4 +66,11 @@ shinyServer(function(input, output) {
       district_map(all=toplot0,toplot1, toplot2, centroids, fill = input$fill, size = input$slider, country = input$type)
     }
   })
+ output$downloadMap <- downloadHandler(
+   filename <- "mapWebDownload.png",
+   content = function(file) {
+     device <- function(..., width, height) grDevices::png(..., width = 4, height = 4, res = 300, units = "in")
+     ggsave(file, device=device)
+   }
+ )
 })
