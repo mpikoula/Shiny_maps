@@ -5,7 +5,10 @@ source("helpers.R")
 library(ggplot2)
 library(rgdal)
 library(RCurl)
+library(gpclib)
+library(maptools)
 
+gpclibPermit()
 load("data/AFG_adm2.RData")
 country.adm2.spdf <- get("gadm")
 
