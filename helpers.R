@@ -41,7 +41,7 @@ district_map <- function(all, province, districts, centroids, fill, size = 3, co
     geom_path(data = province, aes(x = long, y = lat), color = "black")+ 
     lapply(districts,geom_polygon, mapping=aes(x=long, y=lat), fill= fill) + 
     lapply(districts,geom_path, mapping=aes(x=long, y=lat))+
-    geom_text(data = centroids, aes(label = NAME_2, x = long, y = lat, group = NAME_2), size = size) +
+    geom_text(data = centroids, aes(label = DIST_NA_EN, x = long, y = lat, group = DIST_NA_EN), size = size) +
     labs(x=" ", y=" ") + 
     theme_bw() + 
     theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank()) + 
@@ -52,16 +52,16 @@ district_map <- function(all, province, districts, centroids, fill, size = 3, co
 }
 
 getdf2 <- function(country.spdf, province) {
-  sub.shape <- country.spdf[country.spdf$NAME_1 == province,]
-  country.df <- fortify(sub.shape, region = "NAME_2")
+  sub.shape <- country.spdf[country.spdf$PROV_NA_EN == province,]
+  country.df <- fortify(sub.shape, region = "DIST_NA_EN")
 }
 getDistricts <- function(country.df) {
   district_list <- unique(country.df$id)
 }
 
 getCentroids <- function(centroids, province, districts){
-  cent2 <-subset(centroids, (NAME_2 %in% districts))
-  cent2 <-subset(cent2, NAME_1 == province)
+  cent2 <-subset(centroids, (DIST_NA_EN %in% districts))
+  cent2 <-subset(cent2, PROV_NA_EN == province)
 }
 
 getPlot1 <- function(df, province){

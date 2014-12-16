@@ -9,20 +9,21 @@ library(gpclib)
 library(maptools)
 
 gpclibPermit()
-load("data/AFG_adm2.RData")
-country.adm2.spdf <- get("gadm")
 
-country.adm1.df <- fortify(country.adm2.spdf, region = "NAME_1")
+national.spdf <- readShapeSpatial("data/afg_admbnd_adm0_pol.shp")
+country.adm2.spdf <- readShapeSpatial("data/afg_admbnd_adm3_pol.shp")
+
+country.adm1.df <- fortify(country.adm2.spdf, region = "PROV_NA_EN")
 
 # Get names and id numbers corresponding to administrative areas
 country.adm2.centroids.df <- data.frame(long = coordinates(country.adm2.spdf)[, 1], 
                                            lat = coordinates(country.adm2.spdf)[, 2]) 
 
-country.adm2.centroids.df[, 'ID_2'] <- country.adm2.spdf@data[,'ID_2']
-country.adm2.centroids.df[, 'NAME_2'] <- country.adm2.spdf@data[,'NAME_2']
-country.adm2.centroids.df[, 'NAME_1'] <- country.adm2.spdf@data[,'NAME_1']
+country.adm2.centroids.df[, 'DIST_CODE'] <- country.adm2.spdf@data[,'DIST_CODE']
+country.adm2.centroids.df[, 'DIST_NA_EN'] <- country.adm2.spdf@data[,'DIST_NA_EN']
+country.adm2.centroids.df[, 'PROV_NA_EN'] <- country.adm2.spdf@data[,'PROV_NA_EN']
 
-toplot0 <- fortify(country.adm2.spdf, region = "NAME_0")
+toplot0 <- fortify(national.spdf, region = "NAT_NA_ENG")
 
 shinyServer(function(input, output) {
   
@@ -47,7 +48,7 @@ shinyServer(function(input, output) {
   })
   
   output$province <- renderUI({
-    province_list <- levels(as.factor(country.adm2.spdf@data[,'NAME_1']))
+    province_list <- levels(as.factor(country.adm2.spdf@data[,'PROV_NA_EN']))
     selectInput("var1", "Select a Province", choices=province_list, selected=province_list[1], selectize = FALSE)
   })
   
