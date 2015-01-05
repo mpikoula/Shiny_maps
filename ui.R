@@ -12,7 +12,7 @@ shinyUI(fluidPage(
     ),
     mainPanel(
       fluidRow(
-        div("Beta version. Expires 07 Dec 2015", style = "color:red")
+        div("Trial version. Expires 07 Dec 2015", style = "color:red")
       ),
       fluidRow(
       checkboxInput("type", label = "Country-wide Map", value=FALSE),
