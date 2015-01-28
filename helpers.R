@@ -2,10 +2,10 @@
 # It may not work correctly with other data sets if their row order does 
 # not exactly match the order in which the maps package plots districts and provinces
 
-province_map <- function(all, province, fill, size = 3, country = FALSE) {
+province_map <- function(all, province, fill_prov, fill, size = 3, country = FALSE) {
   if (country) {
     p <- ggplot(all, aes(x = long, y = lat, group = group)) + geom_polygon(fill="white", color = "black") +
-      geom_polygon(data=province, aes(x=long, y=lat, group=group), fill="grey", color = "black") +
+      geom_polygon(data=province, aes(x=long, y=lat, group=group), fill=fill_prov, color = "black") +
       geom_path(data = province, aes(x = long, y = lat), color = "black")+ 
       labs(x=" ", y=" ") + 
       theme_bw() + 
@@ -24,10 +24,10 @@ province_map <- function(all, province, fill, size = 3, country = FALSE) {
   print(p)
 }
 
-district_map <- function(all, province, districts, centroids, fill, size = 3, country = FALSE) {
+district_map <- function(all, province, districts, centroids, fill_prov, fill, size = 3, country = FALSE) {
   if (country) {
     p <- ggplot(all, aes(x = long, y = lat, group = group)) + geom_polygon(fill="white", color = "black") +
-      geom_polygon(data=province, aes(x=long, y=lat, group=group), fill="grey", color = "black") +
+      geom_polygon(data=province, aes(x=long, y=lat, group=group), fill=fill_prov, color = "black") +
       geom_path(data = province, aes(x = long, y = lat), color = "black")+ 
       lapply(districts,geom_polygon, mapping=aes(x=long, y=lat), fill= fill) + 
       lapply(districts,geom_path, mapping=aes(x=long, y=lat))+

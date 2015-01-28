@@ -49,7 +49,7 @@ shinyServer(function(input, output) {
   
   output$province <- renderUI({
     province_list <- levels(as.factor(country.adm2.spdf@data[,'PROV_NA_EN']))
-    selectInput("var1", "Select a Province", choices=province_list, selected=province_list[1], selectize = FALSE)
+    selectInput("var1", "Select a Province", choices=province_list, selected=province_list[1], selectize = FALSE,multiple = TRUE)
   })
   
   output$district <- renderUI({
@@ -60,11 +60,11 @@ shinyServer(function(input, output) {
    output$map <- renderPlot({
     toplot1 = plot1Input()
     if (length(input$var2) <= 0) {
-      province_map(all=toplot0,toplot1, country = input$type)
+      province_map(all=toplot0,toplot1, country = input$type, fill_prov = input$fill_prov)
     } else {
       toplot2 = plot2Input()
       centroids = centroidInput()
-      district_map(all=toplot0,toplot1, toplot2, centroids, fill = input$fill, size = input$slider, country = input$type)
+      district_map(all=toplot0,toplot1, toplot2, centroids, fill_prov = input$fill_prov,fill = input$fill, size = input$slider, country = input$type)
     }
   })
  output$downloadMap <- downloadHandler(
