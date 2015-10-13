@@ -70,7 +70,7 @@ shinyServer(function(input, output) {
  output$downloadMap <- downloadHandler(
    filename <- "mapWebDownload.png",
    content = function(file) {
-     device <- function(..., width, height) grDevices::png(..., width = 4, height = 4, res = 300, units = "in")
+     device <- function(..., width, height) grDevices::png(..., res = 300, units = "in")
      ggsave(file, device=device)
    }
  )
