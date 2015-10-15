@@ -6,7 +6,7 @@ province_map <- function(all, province, fill_prov, fill, size = 3, country = FAL
   if (country) {
     p <- ggplot(all, aes(x = long, y = lat, group = group)) + geom_polygon(fill="white", color = "black") +
       geom_polygon(data=province, aes(x=long, y=lat, group=group), fill=fill_prov, color = "black") +
-      geom_path(data = province, aes(x = long, y = lat), color = "black")+ 
+      geom_path(data = province, aes(x = long, y = lat), color = "black")+ coord_fixed() +
       labs(x=" ", y=" ") + 
       theme_bw() + 
       theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank()) + 
@@ -14,7 +14,7 @@ province_map <- function(all, province, fill_prov, fill, size = 3, country = FAL
       theme(panel.border = element_blank())
   } else {
     p <- ggplot(province, aes(x = long, y = lat, group = group)) + geom_polygon(fill="white") +
-      geom_path(data = province, aes(x = long, y = lat), color = "black")+ 
+      geom_path(data = province, aes(x = long, y = lat), color = "black")+ coord_fixed() +
       labs(x=" ", y=" ") + 
       theme_bw() + 
       theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank()) + 
@@ -28,7 +28,7 @@ district_map <- function(all, province, districts, centroids, fill_prov, fill, s
   if (country) {
     p <- ggplot(all, aes(x = long, y = lat, group = group)) + geom_polygon(fill="white", color = "black") +
       geom_polygon(data=province, aes(x=long, y=lat, group=group), fill=fill_prov, color = "black") +
-      geom_path(data = province, aes(x = long, y = lat), color = "black")+ 
+      geom_path(data = province, aes(x = long, y = lat), color = "black")+ coord_fixed() +
       lapply(districts,geom_polygon, mapping=aes(x=long, y=lat), fill= fill) + 
       lapply(districts,geom_path, mapping=aes(x=long, y=lat))+
       labs(x=" ", y=" ") + 
@@ -36,18 +36,18 @@ district_map <- function(all, province, districts, centroids, fill_prov, fill, s
       theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank()) + 
       theme(axis.ticks = element_blank(), axis.text.x = element_blank(), axis.text.y = element_blank()) + 
       theme(panel.border = element_blank())
-} else {
-  p <- ggplot(province, aes(x = long, y = lat, group = group)) + geom_polygon(fill="white") +
-    geom_path(data = province, aes(x = long, y = lat), color = "black")+ 
-    lapply(districts,geom_polygon, mapping=aes(x=long, y=lat), fill= fill) + 
-    lapply(districts,geom_path, mapping=aes(x=long, y=lat))+
-    geom_text(data = centroids, aes(label = DIST_NA_EN, x = long, y = lat, group = DIST_NA_EN), size = size) +
-    labs(x=" ", y=" ") + 
-    theme_bw() + 
-    theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank()) + 
-    theme(axis.ticks = element_blank(), axis.text.x = element_blank(), axis.text.y = element_blank()) + 
-    theme(panel.border = element_blank())
-}
+  } else {
+    p <- ggplot(province, aes(x = long, y = lat, group = group)) + geom_polygon(fill="white") +
+      geom_path(data = province, aes(x = long, y = lat), color = "black")+ coord_fixed() +
+      lapply(districts,geom_polygon, mapping=aes(x=long, y=lat), fill= fill) + 
+      lapply(districts,geom_path, mapping=aes(x=long, y=lat))+
+      geom_text(data = centroids, aes(label = DIST_NA_EN, x = long, y = lat, group = DIST_NA_EN), size = size) +
+      labs(x=" ", y=" ") + 
+      theme_bw() + 
+      theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank()) + 
+      theme(axis.ticks = element_blank(), axis.text.x = element_blank(), axis.text.y = element_blank()) + 
+      theme(panel.border = element_blank())
+  }
   print(p)
 }
 
@@ -65,14 +65,15 @@ getCentroids <- function(centroids, province, districts){
 }
 
 getPlot1 <- function(df, province){
- toplot1 = subset(df, id == province)
+  toplot1 = subset(df, id == province)
 }
 
 getPlot2 <- function(df, districts){
- toplot2 <- replicate(length(districts), data.frame())
+  toplot2 <- replicate(length(districts), data.frame())
   
- for (i in 1:length(districts)) {
-   toplot2[[i]] <- subset(df, id == districts[i])
- }
- return(toplot2)
+  for (i in 1:length(districts)) {
+    toplot2[[i]] <- subset(df, id == districts[i])
+  }
+  return(toplot2)
 }
+
